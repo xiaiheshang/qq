@@ -1,4 +1,4 @@
-package com.it18zhang.tcp.qq.client;
+package com.tcp.qq.client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 import com.it18zhang.tcp.qq.common.MessageFactory;
 
 /**
- * ¿Í»§¶ËUI
+ * å®¢æˆ·ç«¯UI
  */
 public class QQClientUI extends JFrame{
 	
@@ -28,19 +28,19 @@ public class QQClientUI extends JFrame{
 	
 	private ClientCommThread commThread ;
 	
-	//ÀúÊ·ÁÄÌìÇø
+	//å†å²èŠå¤©åŒº
 	private JTextArea taHistory ;
 	
-	//ºÃÓÑÁĞ±í
+	//å¥½å‹åˆ—è¡¨
 	private JList<String> lstFriends  ;
 	
-	//ÏûÏ¢ÊäÈëÇø
+	//æ¶ˆæ¯è¾“å…¥åŒº
 	private JTextArea taInputMessage ;
 	
-	//·¢ËÍ°´Å¥
+	//å‘é€æŒ‰é’®
 	private JButton btnSend ;
 	
-	//Ë¢ĞÂºÃÓÑÁĞ±í°´Å¥
+	//åˆ·æ–°å¥½å‹åˆ—è¡¨æŒ‰é’®
 	private JButton btnRefresh ;
 	
 	public QQClientUI(){
@@ -55,14 +55,14 @@ public class QQClientUI extends JFrame{
 	}
 
 	/**
-	 * ³õÊ¼»¯²¼¾Ö
+	 * åˆå§‹åŒ–å¸ƒå±€
 	 */
 	private void init() {
 		this.setTitle("QQClient");
 		this.setBounds(100,100, 800, 600);
 		this.setLayout(null);
 		
-		//ÀúÊ·Çø
+		//å†å²åŒº
 		taHistory = new JTextArea();
 		taHistory.setBounds(0, 0, 600, 400);
 		
@@ -97,7 +97,7 @@ public class QQClientUI extends JFrame{
 		this.add(taInputMessage);
 		
 		//btnSend
-		btnSend = new JButton("·¢ËÍ");
+		btnSend = new JButton("å‘é€");
 		btnSend.setBounds(560, 420, 100, 160);
 		this.add(btnSend);
 		btnSend.addActionListener(new ActionListener() {
@@ -113,31 +113,31 @@ public class QQClientUI extends JFrame{
 		});
 		
 		//btnRefresh
-		btnRefresh = new JButton("Ë¢ĞÂ");
+		btnRefresh = new JButton("åˆ·æ–°");
 		btnRefresh.setBounds(680, 420, 100, 160);
 		this.add(btnRefresh);
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				byte[] msg = MessageFactory.popClientRefreshFriendsMessage();
 				commThread.sendMessage(msg);
-				System.out.println("Ë¢ĞÂÍê³É!!!");
+				System.out.println("åˆ·æ–°å®Œæˆ!!!");
 				
 			}
 		});
 	}
 
 	/**
-	 * Ìí¼ÓÏûÏ¢µ½ÀúÊ·Çø
+	 * æ·»åŠ æ¶ˆæ¯åˆ°å†å²åŒº
 	 */
 	public void addMsgToHistory(String senderInfo, String msgStr) {
-		taHistory.append(senderInfo + " Ëµ :\r\n");
+		taHistory.append(senderInfo + " è¯´ :\r\n");
 		taHistory.append("       " + msgStr);
 		taHistory.append("\r\n");
 		taHistory.append("\r\n");
 	}
 
 	/**
-	 * Ë¢ĞÂºÃÓÑÁĞ±í
+	 * åˆ·æ–°å¥½å‹åˆ—è¡¨
 	 */
 	public void refreshFriends(List<String> friends) {
 		DefaultListModel<String> model = new DefaultListModel<String>();
