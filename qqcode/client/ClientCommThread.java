@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-import com.it18zhang.tcp.qq.common.Message;
-import com.it18zhang.tcp.qq.common.MessageFactory;
-import com.it18zhang.tcp.qq.common.ServerChatsMessage;
-import com.it18zhang.tcp.qq.common.ServerRefreshFriendsMessage;
-import com.it18zhang.tcp.qq.common.ServerSingleChatMessage;
-import com.it18zhang.tcp.qq.common.Util;
+import com.tcp.qq.common.Message;
+import com.tcp.qq.common.MessageFactory;
+import com.tcp.qq.common.ServerChatsMessage;
+import com.tcp.qq.common.ServerRefreshFriendsMessage;
+import com.tcp.qq.common.ServerSingleChatMessage;
+import com.tcp.qq.common.Util;
 
 /**
- * ½ÓÊÜÏûÏ¢Ïß³Ì
+ * æ¥å—æ¶ˆæ¯çº¿ç¨‹
  */
 public class ClientCommThread extends Thread {
 
@@ -30,21 +30,21 @@ public class ClientCommThread extends Thread {
 		while(true){
 			try {
 				Message msg = MessageFactory.parseServerMessage(sock);
-				//ÈºÁÄ
+				//ç¾¤èŠ
 				if(msg.getClass() == ServerChatsMessage.class){
 					ServerChatsMessage m = (ServerChatsMessage)msg;
 					String senderInfo = new String(m.getSenderInfoBytes());
 					String msgStr = new String(m.getMsgBytes());
-					//Ìí¼ÓÏûÏ¢µ½ÀúÊ·Çø
+					//æ·»åŠ æ¶ˆæ¯åˆ°å†å²åŒº
 					ui.addMsgToHistory(senderInfo,msgStr);
 				}
-				//Ë½ÁÄ
+				//ç§èŠ
 				else if(msg.getClass() == ServerSingleChatMessage.class){
 					ServerSingleChatMessage m = (ServerSingleChatMessage)msg;
 					String senderInfo = new String(m.getSenderInfoBytes());
 					String msgStr = new String(m.getMessage());
 					
-					//TODO Ë½ÁÄ
+					//TODO ç§èŠ
 					QQClientChatSingleUI sui = null ;
 					if(!ui.windows.containsKey(senderInfo)){
 						sui = new QQClientChatSingleUI(this, senderInfo);
@@ -56,7 +56,7 @@ public class ClientCommThread extends Thread {
 					}
 					sui.updateHistory(senderInfo, msgStr);
 				} 
-				//Ë¢ĞÂ
+				//åˆ·æ–°
 				else if(msg.getClass() == ServerRefreshFriendsMessage.class){
 					ServerRefreshFriendsMessage m = (ServerRefreshFriendsMessage)msg;
 					byte[] bytes = m.getFriendsBytes();
@@ -70,7 +70,7 @@ public class ClientCommThread extends Thread {
 	}
 	
 	/**
-	 * ·¢ËÍÏûÏ¢
+	 * å‘é€æ¶ˆæ¯
 	 */
 	public void sendMessage(byte[] bytes){
 		try {
