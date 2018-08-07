@@ -1,7 +1,7 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 /**
- * 服务器刷新列表
+ * 路镁脦帽脝梅脣垄脨脗脕脨卤铆
  */
 public class ServerRefreshFriendsMessage extends Message {
 
