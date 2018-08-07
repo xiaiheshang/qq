@@ -1,4 +1,4 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,11 +8,11 @@ import java.net.Socket;
 import com.it18zhang.tcp.qq.server.QQServer;
 
 /**
- * ÏûÏ¢¹¤³§
+ * æ¶ˆæ¯å·¥å‚
  */
 public class MessageFactory {
 	/**
-	 * ´ÓÁ÷ÖĞ½âÎöÏûÏ¢ ,½âÎö¿Í»§¶ËÏûÏ¢£¬²¢Ö±½Ó×ª»»³É·şÎñÆ÷ÏûÏ¢
+	 * ä»æµä¸­è§£ææ¶ˆæ¯ ,è§£æå®¢æˆ·ç«¯æ¶ˆæ¯ï¼Œå¹¶ç›´æ¥è½¬æ¢æˆæœåŠ¡å™¨æ¶ˆæ¯
 	 * @throws Exception 
 	 */
 	public static byte[] parseClientMessageAndSend(Socket sock) throws Exception{
@@ -20,33 +20,33 @@ public class MessageFactory {
 		
 		byte[] msgTypeBytes = new byte[4];
 		in.read(msgTypeBytes);
-		//ÏûÏ¢
+		//æ¶ˆæ¯
 		Message msg = null ;
 		
 		switch(Util.bytes2Int(msgTypeBytes)){
-			//1.ÈºÁÄ
+			//1.ç¾¤èŠ
 			case Message.CLIENT_TO_SERVER_CHATS :
 				{
-					//¹¹ÔìÏûÏ¢¶ÔÏó
+					//æ„é€ æ¶ˆæ¯å¯¹è±¡
 					msg = new ClientChatsMessage();
-					//¶ÁÈ¡ÏûÏ¢³¤¶È4×Ö½Ú
+					//è¯»å–æ¶ˆæ¯é•¿åº¦4å­—èŠ‚
 					byte[] bytes4 = new byte[4];
 					in.read(bytes4);
 					int msgLen = Util.bytes2Int(bytes4);
 					
-					//¶ÁÈ¡ÏûÏ¢ÄÚÈİ
+					//è¯»å–æ¶ˆæ¯å†…å®¹
 					byte[] msgBytes = new byte[msgLen] ;
 					in.read(msgBytes);
 					((ClientChatsMessage)msg).setMessage(msgBytes);
 					
-					//×ª»»³É·şÎñÆ÷ÏûÏ¢
+					//è½¬æ¢æˆæœåŠ¡å™¨æ¶ˆæ¯
 					ServerChatsMessage serverMsg = new ServerChatsMessage();
 					serverMsg.setSenderInfoBytes(Util.getUserInfo(sock));
 					serverMsg.setMsgBytes(((ClientChatsMessage)msg).getMessage());
 					
-					//×ª»»³ÉÊı×é
+					//è½¬æ¢æˆæ•°ç»„
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					//ÏûÏ¢ÀàĞÍ(4)
+					//æ¶ˆæ¯ç±»å‹(4)
 					baos.write(Util.int2Bytes(Message.SERVER_TO_CLIENT_CHATS));
 					//userInfoLen(4)
 					baos.write(Util.int2Bytes(serverMsg.getSenderInfoBytes().length));
@@ -57,7 +57,7 @@ public class MessageFactory {
 					//msg
 					baos.write(serverMsg.getMsgBytes());
 					
-					//¹ã²¥
+					//å¹¿æ’­
 					QQServer.getInstance().broadcast(baos.toByteArray());
 				}
 				break ;
@@ -65,70 +65,70 @@ public class MessageFactory {
 			case Message.CLIENT_TO_SERVER_EXIT :
 				{
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					//1.Ë¢ĞÂÁĞ±íÏûÏ¢ÀàĞÍ
+					//1.åˆ·æ–°åˆ—è¡¨æ¶ˆæ¯ç±»å‹
 					baos.write(Util.int2Bytes(Message.SERVER_TO_CLIENT_REFRESH_FRIENTS));
-					//2.ÁĞ±íµÄÊı¾İ³¤¶È
+					//2.åˆ—è¡¨çš„æ•°æ®é•¿åº¦
 					baos.write(Util.int2Bytes(QQServer.getInstance().getFriendBytes().length));
-					//3.ÁĞ±íÊı¾İ
+					//3.åˆ—è¡¨æ•°æ®
 					baos.write(QQServer.getInstance().getFriendBytes());
 					QQServer.getInstance().broadcast(baos.toByteArray());
 				}
 				break ;
-			//Ë¢ĞÂÁĞ±í
+			//åˆ·æ–°åˆ—è¡¨
 			case Message.CLIENT_TO_SERVER_REFRESH_FRIENDS :
 				{
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					//1.Ë¢ĞÂÁĞ±íÏûÏ¢ÀàĞÍ
+					//1.åˆ·æ–°åˆ—è¡¨æ¶ˆæ¯ç±»å‹
 					baos.write(Util.int2Bytes(Message.SERVER_TO_CLIENT_REFRESH_FRIENTS));
-					//2.ÁĞ±íµÄÊı¾İ³¤¶È
+					//2.åˆ—è¡¨çš„æ•°æ®é•¿åº¦
 					baos.write(Util.int2Bytes(QQServer.getInstance().getFriendBytes().length));
-					//3.ÁĞ±íÊı¾İ
+					//3.åˆ—è¡¨æ•°æ®
 					baos.write(QQServer.getInstance().getFriendBytes());
 					QQServer.getInstance().broadcast(baos.toByteArray());
-					//·¢ËÍºÃÓÑÁĞ±í¸øclient
+					//å‘é€å¥½å‹åˆ—è¡¨ç»™client
 					QQServer.getInstance().send(baos.toByteArray(),Util.getUserInfo(sock));
 				}
 				break ;
-			//Ë½ÁÄ
+			//ç§èŠ
 			case Message.CLIENT_TO_SERVER_SINGLE_CHAT :
 				{
-					//¹¹ÔìÏûÏ¢¶ÔÏó
+					//æ„é€ æ¶ˆæ¯å¯¹è±¡
 					msg = new ClientSingleChatMessage();
 					
 					byte[] bytes4 = new byte[4];
-					//¶ÁÈ¡½ÓÊÜÕßÓÃ»§ĞÅÏ¢³¤¶È
+					//è¯»å–æ¥å—è€…ç”¨æˆ·ä¿¡æ¯é•¿åº¦
 					in.read(bytes4);
 					int recverInfoLen = Util.bytes2Int(bytes4);
 					
-					//¶ÁÈ¡½ÓÊÜÕßÓÃ»§ĞÅÏ¢
+					//è¯»å–æ¥å—è€…ç”¨æˆ·ä¿¡æ¯
 					byte[] recvInfoBytes = new byte[recverInfoLen];
 					in.read(recvInfoBytes);
 					((ClientSingleChatMessage)msg).setRecverInfoBytes(recvInfoBytes);
 					
-					//¶ÁÈ¡ÏûÏ¢³¤¶È4×Ö½Ú
+					//è¯»å–æ¶ˆæ¯é•¿åº¦4å­—èŠ‚
 					in.read(bytes4);
 					int msgLen = Util.bytes2Int(bytes4);
 					
-					//¶ÁÈ¡ÏûÏ¢ÄÚÈİ
+					//è¯»å–æ¶ˆæ¯å†…å®¹
 					byte[] msgBytes = new byte[msgLen] ;
 					in.read(msgBytes);
 					((ClientSingleChatMessage)msg).setMessage(msgBytes);
 					
-					//×ª»»³É·şÎñÆ÷Ë½ÁÄÏûÏ¢
+					//è½¬æ¢æˆæœåŠ¡å™¨ç§èŠæ¶ˆæ¯
 					ServerSingleChatMessage serverMsg = new ServerSingleChatMessage();
 					
-					//·¢ËÍÕßÏûÏ¢
+					//å‘é€è€…æ¶ˆæ¯
 					serverMsg.setSenderInfoBytes(Util.getUserInfo(sock));
 					
-					//½ÓÊÜÕßÏûÏ¢
+					//æ¥å—è€…æ¶ˆæ¯
 					serverMsg.setRecverInfoBytes(((ClientSingleChatMessage)msg).getRecverInfoBytes());
 					
-					//ÁÄÌìĞÅÏ¢
+					//èŠå¤©ä¿¡æ¯
 					serverMsg.setMessage(((ClientSingleChatMessage)msg).getMessage());
 					
-					//¹¹ÔìÏûÏ¢
+					//æ„é€ æ¶ˆæ¯
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					//1.ÀàĞÍ
+					//1.ç±»å‹
 					baos.write(Util.int2Bytes(Message.SERVER_TO_CLIENT_SINGLE_CHAT));
 					//2.senderInfoLen
 					baos.write(Util.int2Bytes(serverMsg.getSenderInfoBytes().length));
@@ -138,7 +138,7 @@ public class MessageFactory {
 					baos.write(Util.int2Bytes(serverMsg.getMessage().length));
 					baos.write(serverMsg.getMessage());
 					
-					//·¢ËÍË½ÁÄ¸ø½ÓÊÜÕß
+					//å‘é€ç§èŠç»™æ¥å—è€…
 					QQServer.getInstance().send(baos.toByteArray(),serverMsg.getRecverInfoBytes());
 				}
 				break ;
@@ -147,7 +147,7 @@ public class MessageFactory {
 	}
 	
 	/**
-	 * ½âÎö·şÎñÆ÷¶ËÏûÏ¢
+	 * è§£ææœåŠ¡å™¨ç«¯æ¶ˆæ¯
 	 */
 	public static Message parseServerMessage(Socket sock) throws IOException {
 		InputStream in = sock.getInputStream();
@@ -155,9 +155,9 @@ public class MessageFactory {
 		in.read(msgTypeBytes);
 		
 		int msgType = Util.bytes2Int(msgTypeBytes) ;
-		//ÏûÏ¢
+		//æ¶ˆæ¯
 		switch(msgType){
-			//ÈºÁÄ
+			//ç¾¤èŠ
 			case Message.SERVER_TO_CLIENT_CHATS:
 				{
 					//1.senderInfoLen
@@ -177,13 +177,13 @@ public class MessageFactory {
 					byte[] msgBytes = new byte[msgLen];
 					in.read(msgBytes);
 					
-					//¹¹Ôì·şÎñÆ÷ÈºÁÄÏûÏ¢
+					//æ„é€ æœåŠ¡å™¨ç¾¤èŠæ¶ˆæ¯
 					ServerChatsMessage msg = new ServerChatsMessage();
 					msg.setMsgBytes(msgBytes);
 					msg.setSenderInfoBytes(senderInfoBytes);
 					return msg ;
 				}
-			//Ë½ÁÄ
+			//ç§èŠ
 			case Message.SERVER_TO_CLIENT_SINGLE_CHAT:
 				{
 					//1.senderInfoLen
@@ -203,13 +203,13 @@ public class MessageFactory {
 					byte[] msgBytes = new byte[msgLen];
 					in.read(msgBytes);
 					
-					//¹¹Ôì·şÎñÆ÷ÈºÁÄÏûÏ¢
+					//æ„é€ æœåŠ¡å™¨ç¾¤èŠæ¶ˆæ¯
 					ServerSingleChatMessage msg = new ServerSingleChatMessage();
 					msg.setMessage(msgBytes);
 					msg.setSenderInfoBytes(senderInfoBytes);
 					return msg ;
 				}
-			//Ë¢ĞÂÁĞ±í
+			//åˆ·æ–°åˆ—è¡¨
 			case Message.SERVER_TO_CLIENT_REFRESH_FRIENTS:
 				{
 					//1.friendsLen
@@ -221,7 +221,7 @@ public class MessageFactory {
 					byte[] friendsBytes = new byte[friendsLen];
 					in.read(friendsBytes);
 					
-					//¹¹Ôì·şÎñÆ÷ÈºÁÄÏûÏ¢
+					//æ„é€ æœåŠ¡å™¨ç¾¤èŠæ¶ˆæ¯
 					ServerRefreshFriendsMessage msg = new ServerRefreshFriendsMessage();
 					msg.setFriendsBytes(friendsBytes);
 					return msg ;
@@ -231,18 +231,18 @@ public class MessageFactory {
 	}
 
 	/**
-	 * ×é×°¿Í»§¶ËÈºÁÄÏûÏ¢
+	 * ç»„è£…å®¢æˆ·ç«¯ç¾¤èŠæ¶ˆæ¯
 	 */
 	public static byte[] popClientChatsMessage(String txt) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			//1.ÏûÏ¢ÀàĞÍ
+			//1.æ¶ˆæ¯ç±»å‹
 			baos.write(Util.int2Bytes(Message.CLIENT_TO_SERVER_CHATS));
 			
 			byte[] msgBytes = txt.getBytes();
-			//2.ÏûÏ¢³¤¶È
+			//2.æ¶ˆæ¯é•¿åº¦
 			baos.write(Util.int2Bytes(msgBytes.length));
-			//3.ÏûÏ¢
+			//3.æ¶ˆæ¯
 			baos.write(msgBytes);
 			baos.close();
 			return baos.toByteArray();
@@ -253,28 +253,28 @@ public class MessageFactory {
 	}
 
 	/**
-	 * ×é×°Ë½ÁÄÏûÏ¢
+	 * ç»„è£…ç§èŠæ¶ˆæ¯
 	 */
 	public static byte[] popClientSingleChatMessage(String recvInfo, String str) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			//1.ÏûÏ¢ÀàĞÍ
+			//1.æ¶ˆæ¯ç±»å‹
 			baos.write(Util.int2Bytes(Message.CLIENT_TO_SERVER_SINGLE_CHAT));
 			
-			//2.½ÓÊÜÕßĞÂ³¤¶È
+			//2.æ¥å—è€…æ–°é•¿åº¦
 			byte[] recvInfoBytes = recvInfo.getBytes();
 			baos.write(Util.int2Bytes(recvInfoBytes.length));
 			
-			//3.½ÓÊÜÕßĞÅÏ¢
+			//3.æ¥å—è€…ä¿¡æ¯
 			baos.write(recvInfoBytes);
 			
-			//4.ÏûÏ¢
+			//4.æ¶ˆæ¯
 			byte[] msgBytes = str.getBytes();
 			
-			//5.ÏûÏ¢³¤¶È
+			//5.æ¶ˆæ¯é•¿åº¦
 			baos.write(Util.int2Bytes(msgBytes.length));
 			
-			//6.ÏûÏ¢
+			//6.æ¶ˆæ¯
 			baos.write(msgBytes);
 			baos.close();
 			return baos.toByteArray();
@@ -288,7 +288,7 @@ public class MessageFactory {
 	public static byte[] popClientRefreshFriendsMessage() {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			//1.ÏûÏ¢ÀàĞÍ
+			//1.æ¶ˆæ¯ç±»å‹
 			baos.write(Util.int2Bytes(Message.CLIENT_TO_SERVER_REFRESH_FRIENDS));
 			baos.close();
 			return baos.toByteArray();
