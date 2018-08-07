@@ -1,4 +1,4 @@
-package com.it18zhang.tcp.qq.client;
+package com.qq.client;
 
 import java.net.Socket;
 
