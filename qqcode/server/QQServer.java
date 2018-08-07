@@ -1,4 +1,4 @@
-package com.it18zhang.tcp.qq.server;
+package com.tcp.qq.server;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -12,11 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.it18zhang.tcp.qq.common.Message;
-import com.it18zhang.tcp.qq.common.Util;
+import com.tcp.qq.common.Message;
+import com.tcp.qq.common.Util;
 
 /**
- * ServerÀà
+ * Serverç±»
  */
 public class QQServer {
 	
@@ -29,29 +29,29 @@ public class QQServer {
 	private QQServer(){
 	}
 	
-	//Î¬»¤ËùÓĞsocket¶ÔÏó
+	//ç»´æŠ¤æ‰€æœ‰socketå¯¹è±¡
 	//key : remoteIP + ":" + remotePort
 	private Map<String, Socket> allSockets = new HashMap<String,Socket>();
 	
 	/**
-	 * Æô¶¯·şÎñÆ÷
+	 * å¯åŠ¨æœåŠ¡å™¨
 	 */
 	public void start(){
 		try {
 			ServerSocket ss = new ServerSocket(8888);
 			while(true){
-				//×èÈû
+				//é˜»å¡
 				Socket sock = ss.accept();
 				
 				InetSocketAddress remoteAddr = (InetSocketAddress)sock.getRemoteSocketAddress();
-				//Ô¶³Ìip
+				//è¿œç¨‹ip
 				String remoteIp = remoteAddr.getAddress().getHostAddress();
-				//Ô¶³Ì¶Ë¿Ú
+				//è¿œç¨‹ç«¯å£
 				int remotePort = remoteAddr.getPort();
 				String key= remoteIp + ":" + remotePort;
 				allSockets.put(key, sock);
 				
-				//¿ªÆğ·şÎñÆ÷¶ËÍ¨ĞÅÏß³Ì
+				//å¼€èµ·æœåŠ¡å™¨ç«¯é€šä¿¡çº¿ç¨‹
 				new CommThread(sock).start();
 				this.broadcastFriends();
 			}
@@ -61,7 +61,7 @@ public class QQServer {
 	}
 	
 	/**
-	 * µÃµ½ºÃÓÑÁĞ±íµÄ´®ĞĞÊı¾İ
+	 * å¾—åˆ°å¥½å‹åˆ—è¡¨çš„ä¸²è¡Œæ•°æ®
 	 * @return
 	 */
 	public byte[] getFriendBytes(){
@@ -77,14 +77,14 @@ public class QQServer {
 
 
 	/**
-	 * ¹ã²¥ÈºÁÄ
+	 * å¹¿æ’­ç¾¤èŠ
 	 */
 	public void broadcast(byte[] bytes) {
 		Iterator<Socket> it = allSockets.values().iterator();
 		while(it.hasNext()){
 			try{
 				OutputStream out = it.next().getOutputStream();
-				//1.ÏûÏ¢ÀàĞÍ
+				//1.æ¶ˆæ¯ç±»å‹
 				out.write(bytes);
 				out.flush();
 			}
@@ -95,7 +95,7 @@ public class QQServer {
 	}
 	
 	/**
-	 * ·¢ËÍË½ÁÄ
+	 * å‘é€ç§èŠ
 	 */
 	public void send(byte[] msg , byte[] userInfo) {
 		try{
@@ -112,17 +112,17 @@ public class QQServer {
 	}
 	
 	/**
-	 * ¹ã²¥ºÃÓÑÁĞ±í
+	 * å¹¿æ’­å¥½å‹åˆ—è¡¨
 	 */
 	public void broadcastFriends(){
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			//1.Ë¢ĞÂÁĞ±íÏûÏ¢ÀàĞÍ
+			//1.åˆ·æ–°åˆ—è¡¨æ¶ˆæ¯ç±»å‹
 			baos.write(Util.int2Bytes(Message.SERVER_TO_CLIENT_REFRESH_FRIENTS));
-			//2.ÁĞ±íµÄÊı¾İ³¤¶È
+			//2.åˆ—è¡¨çš„æ•°æ®é•¿åº¦
 			byte[] friendsBytes = QQServer.getInstance().getFriendBytes() ;
 			baos.write(Util.int2Bytes(friendsBytes.length));
-			//3.ÁĞ±íÊı¾İ
+			//3.åˆ—è¡¨æ•°æ®
 			baos.write(QQServer.getInstance().getFriendBytes());
 			QQServer.getInstance().broadcast(baos.toByteArray());
 			
@@ -131,7 +131,7 @@ public class QQServer {
 	}
 	
 	/**
-	 * É¾³ıÖ¸¶¨ÓÃ»§ 
+	 * åˆ é™¤æŒ‡å®šç”¨æˆ· 
 	 */
 	public synchronized void removeUser(String user){
 		allSockets.remove(user);
