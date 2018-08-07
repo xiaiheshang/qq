@@ -1,4 +1,4 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,7 +11,7 @@ import java.net.Socket;
 public class Util {
 	
 	/**
-	 * ½«longĞÍÊı¾İ×ª»»³Ébyte[] 
+	 * å°†longå‹æ•°æ®è½¬æ¢æˆbyte[] 
 	 */
 	public static byte[] long2Bytes(long l){
 		byte[] bytes = new byte[8] ;
@@ -38,7 +38,7 @@ public class Util {
 	}
 	
 	/**
-	 * ½«longĞÍÊı¾İ×ª»»³Ébyte[] 
+	 * å°†longå‹æ•°æ®è½¬æ¢æˆbyte[] 
 	 */
 	public static byte[] int2Bytes(int l){
 		byte[] bytes = new byte[4] ;
@@ -64,7 +64,7 @@ public class Util {
 	}
 
 	/**
-	 * ´®ĞĞ»¯¶ÔÏó
+	 * ä¸²è¡ŒåŒ–å¯¹è±¡
 	 */
 	public static byte[] serializeObject(Serializable src) {
 		try {
@@ -81,7 +81,7 @@ public class Util {
 	}
 	
 	/**
-	 * Ê¹ÓÃjavaµÄ·´´®ĞĞ»¯ÊµÏÖºÃÓÑÁĞ±íµÄË¢ĞÂ
+	 * ä½¿ç”¨javaçš„åä¸²è¡ŒåŒ–å®ç°å¥½å‹åˆ—è¡¨çš„åˆ·æ–°
 	 */
 	public static Serializable deSerializeObject(byte[] bytes){
 		try {
@@ -98,7 +98,7 @@ public class Util {
 	}
 	
 	/**
-	 * Í¨¹ısockµÃµ½Ô¶³Ì¿Í»§¶ËuserĞÅÏ¢
+	 * é€šè¿‡sockå¾—åˆ°è¿œç¨‹å®¢æˆ·ç«¯userä¿¡æ¯
 	 */
 	public static byte[] getUserInfo(Socket sock){
 		try {
@@ -112,7 +112,7 @@ public class Util {
 		return null ;
 	}
 	/**
-	 * Í¨¹ısockµÃµ½Ô¶³Ì¿Í»§¶ËuserĞÅÏ¢
+	 * é€šè¿‡sockå¾—åˆ°è¿œç¨‹å®¢æˆ·ç«¯userä¿¡æ¯
 	 */
 	public static String getUserInfoStr(Socket sock){
 		try {
