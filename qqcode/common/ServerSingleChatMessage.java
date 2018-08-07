@@ -1,11 +1,11 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 /**
- * ·şÎñÆ÷Ë½ÁÄ
+ * æœåŠ¡å™¨ç§èŠ
  */
 public class ServerSingleChatMessage extends Message {
 	
-	//·¢ËÍ·½ÏûÏ¢
+	//å‘é€æ–¹æ¶ˆæ¯
 	private byte[] recverInfoBytes ;
 	
 	private byte[] senderInfoBytes ;
@@ -26,7 +26,7 @@ public class ServerSingleChatMessage extends Message {
 		this.recverInfoBytes = recverInfoBytes;
 	}
 
-	//ÏûÏ¢ÄÚÈİ
+	//æ¶ˆæ¯å†…å®¹
 	private byte[] message ;
 
 	public byte[] getMessage() {
