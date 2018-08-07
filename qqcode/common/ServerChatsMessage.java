@@ -1,7 +1,7 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 /**
- * 服务器群聊消息 
+ * 路镁脦帽脝梅脠潞脕脛脧没脧垄 
  */
 public class ServerChatsMessage extends Message {
 
