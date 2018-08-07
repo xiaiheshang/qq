@@ -1,9 +1,9 @@
-package com.it18zhang.tcp.qq.server;
+package com.tcp.qq.server;
 
 public class QQServerMain {
 	
 	public static void main(String[] args) {
-		System.out.println("服务器启动了....");
+		System.out.println("路镁脦帽脝梅脝么露炉脕脣....");
 		QQServer.getInstance().start();
 	}
 }
