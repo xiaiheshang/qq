@@ -1,4 +1,4 @@
-package com.it18zhang.tcp.qq.server;
+package com.tcp.qq.server;
 
 import java.net.Socket;
 
@@ -6,7 +6,7 @@ import com.it18zhang.tcp.qq.common.MessageFactory;
 import com.it18zhang.tcp.qq.common.Util;
 
 /**
- * Í¨ĞÅÏß³Ì 
+ * é€šä¿¡çº¿ç¨‹ 
  */
 public class CommThread extends Thread {
 	
@@ -19,7 +19,7 @@ public class CommThread extends Thread {
 	
 	public void run() {
 		while(true){
-			//½âÎöclient·¢À´µÄÏûÏ¢
+			//è§£æclientå‘æ¥çš„æ¶ˆæ¯
 			try {
 				MessageFactory.parseClientMessageAndSend(sock);
 			} catch (Exception e) {
