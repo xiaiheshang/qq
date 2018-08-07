@@ -1,7 +1,7 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 /**
- * 客户端退出消息
+ * 驴脥禄搂露脣脥脣鲁枚脧没脧垄
  */
 public class ClientRefreshFriendsMessage extends Message {
 
