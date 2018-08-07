@@ -1,10 +1,10 @@
-package com.it18zhang.tcp.qq.common;
+package com.tcp.qq.common;
 
 /**
- * 客户端和大家群聊消息
+ * 瀹㈡埛绔拰澶у缇よ亰娑堟伅
  */
 public class ClientChatsMessage extends Message {
-	//消息内容
+	//娑堟伅鍐呭
 	private byte[] message ;
 
 	public byte[] getMessage() {
